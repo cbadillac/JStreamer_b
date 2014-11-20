@@ -27,7 +27,7 @@ public final class StreamBackend {
 			
 		case 2:
 			System.out.println("video streaming");
-			command = "cvlc -vvv "+ source +" --sout '#udp{dst="+ ip +":"+ port +"}' --loop";
+			command = "cvlc -vvv "+ source +" :sout=#udp{dst="+ ip +":"+ port +"} :sout-keep";
 			break;
 
 		default:
@@ -37,8 +37,8 @@ public final class StreamBackend {
 		System.out.println(command);
 		try {
 			streamProcess = GSTreamer_send(ip, port, source,command);
-			StreamGobbler errorGobbler  = new StreamGobbler(streamProcess.getErrorStream(), false);
-		    StreamGobbler outputGobbler = new StreamGobbler(streamProcess.getInputStream(), false);
+			StreamGobbler errorGobbler  = new StreamGobbler(streamProcess.getErrorStream(), false, isStop);
+		    StreamGobbler outputGobbler = new StreamGobbler(streamProcess.getInputStream(), false, isStop);
 		    errorGobbler.start();
 		    outputGobbler.start();
 		    

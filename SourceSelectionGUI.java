@@ -54,14 +54,15 @@ public class SourceSelectionGUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JButton btnNewButton_1 = new JButton("Stop");
+		final JButton btnNewButton_1 = new JButton("Stop");
 		btnNewButton_1.setBounds(42, 76, 117, 25);
 		contentPane.add(btnNewButton_1);
+		btnNewButton_1.setEnabled(false);
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Stop!!");
 				isStop.value = true;
-				//me.setVisible(false);
+				
 			}
 		});
 		
@@ -75,17 +76,20 @@ public class SourceSelectionGUI extends JFrame {
 		textField.setText(source);
 		textField.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Start");
+		final JButton btnNewButton = new JButton("Start");
 		btnNewButton.setBounds(301, 76, 117, 25);
 		contentPane.add(btnNewButton);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Start");
+				btnNewButton_1.setEnabled(true);
+				btnNewButton.setEnabled(false);
 				source = textField.getText();
 				new Thread(){
 					public void run() {
 						StreamBackend.initStreaming(opt, ip, 
 								port, source, isStop);
+						me.setVisible(false);
 					}
 				}.start();
 				
