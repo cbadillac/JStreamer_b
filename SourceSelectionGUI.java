@@ -1,4 +1,3 @@
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -33,9 +32,6 @@ public class SourceSelectionGUI extends JFrame {
 			source = "audio.mp3";
 			break;
 		case 1:
-			source = "/dev/video0";
-			break;
-		case 2:
 			source = "video.avi";
 			break;
 
@@ -79,8 +75,6 @@ public class SourceSelectionGUI extends JFrame {
 		contentPane.add(btnNewButton);
 
 		JButton btnOpen = new JButton("Open...");
-		if (opt == 1)
-			btnOpen.setVisible(false);
 
 		btnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -111,6 +105,7 @@ public class SourceSelectionGUI extends JFrame {
 				btnNewButton_1.setEnabled(true);
 				btnNewButton.setEnabled(false);
 				source = textField.getText();
+
 				new Thread() {
 					public void run() {
 						StreamBackend.initStreaming(opt, ip, port, source,

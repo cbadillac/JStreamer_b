@@ -20,15 +20,8 @@ public final class StreamBackend {
 			command = "gst-launch-0.10 filesrc location=" + source
 					+ " ! tcpclientsink host=" + ip + " port=" + port;
 			break;
-		case 1:
-			System.out.println("WebCam streaming");
-			command = "gst-launch-0.10 v4l2src device=" + source + " !"
-					+ " 'video/x-raw-yuv,width=640,height=480' !"
-					+ "  x264enc pass=qual quantizer=20 tune=zerolatency !"
-					+ " rtph264pay !" + " udpsink host=" + ip + " port=" + port;
-			break;
 
-		case 2:
+		case 1:
 			System.out.println("video streaming");
 			command = "cvlc -vvv " + source + " :sout=#udp{dst=" + ip + ":"
 					+ port + "} :sout-keep";
@@ -78,7 +71,7 @@ public final class StreamBackend {
 	
 	static User create_User(int PORT, String hostname) throws IOException {
 
-		InetAddress addr = InetAddress.getByName("127.0.0.1");
+		InetAddress addr = InetAddress.getByName(hostname);
 
 		System.out.println("addr = " + addr);
 

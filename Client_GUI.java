@@ -2,26 +2,23 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.AbstractListModel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
 import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JTabbedPane;
+import java.io.IOException;
 
 public class Client_GUI extends JFrame {
 	private JTextField textField;
 	private JTextField textField_1;
-	private int option = 0; // 0: Audio, 1: Webcam, 2: Video
+	private int option = 0; // 0: Audio, 1: Video
 	private String ip = "127.0.0.1";
 	private String port = "5000";
+	static int TCP_PORT = 12345;
 
 	public Client_GUI() {
 
@@ -33,7 +30,7 @@ public class Client_GUI extends JFrame {
 		final JList list = new JList();
 		list.setVisibleRowCount(3);
 		list.setModel(new AbstractListModel() {
-			String[] values = new String[] { "Audio", "WebCam", "Video" };
+			String[] values = new String[] { "audio", "video" };
 
 			public int getSize() {
 				return values.length;
@@ -82,6 +79,18 @@ public class Client_GUI extends JFrame {
 				option = list.getSelectedIndex();
 				ip = textField.getText();
 				port = textField_1.getText();
+				try {
+					User user = StreamBackend.create_User(TCP_PORT, ip);
+					
+					user.AddCommand(ip);
+					port = user.takeAnswer();					
+					user.AddCommand(list.getSelectedValue().toString());
+		            user.takeAnswer();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return;
+				}
 
 				SourceSelectionGUI sourceSelectionGUI = new SourceSelectionGUI(
 						option, ip, port);
