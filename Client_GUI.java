@@ -79,11 +79,14 @@ public class Client_GUI extends JFrame {
 				option = list.getSelectedIndex();
 				ip = textField.getText();
 				port = textField_1.getText();
+				String udp_port;
+				User user = null;
 				try {
-					User user = StreamBackend.create_User(TCP_PORT, ip);
+					user = StreamBackend.create_User(Integer.parseInt(port), ip);
 					
 					user.AddCommand(ip);
-					port = user.takeAnswer();					
+					udp_port = user.takeAnswer();
+					System.out.println("UDP PORT: "+ udp_port);
 					user.AddCommand(list.getSelectedValue().toString());
 		            user.takeAnswer();
 				} catch (IOException e) {
@@ -93,7 +96,7 @@ public class Client_GUI extends JFrame {
 				}
 
 				SourceSelectionGUI sourceSelectionGUI = new SourceSelectionGUI(
-						option, ip, port);
+						option, ip, udp_port, user);
 				sourceSelectionGUI
 						.setDefaultCloseOperation(sourceSelectionGUI.HIDE_ON_CLOSE);
 				sourceSelectionGUI.setVisible(true);

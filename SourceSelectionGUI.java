@@ -18,14 +18,16 @@ public class SourceSelectionGUI extends JFrame {
 	private String port;
 	private String source;
 	private BoolObj isStop;
+	private User user;
 
-	public SourceSelectionGUI(final int opt, final String ip, final String port) {
+	public SourceSelectionGUI(final int opt, final String ip, final String port, final User user) {
 		isStop = new BoolObj();
 		isStop.value = false;
 		final SourceSelectionGUI me = this;
 		this.opt = opt;
 		this.ip = ip;
 		this.port = port;
+		this.user = user;
 
 		switch (opt) {
 		case 0:
@@ -55,6 +57,7 @@ public class SourceSelectionGUI extends JFrame {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Stop!!");
+				user.AddCommand("stop");
 				isStop.value = true;
 
 			}
